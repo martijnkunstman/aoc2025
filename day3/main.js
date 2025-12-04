@@ -50,7 +50,7 @@ fetch(0 ? "sample.txt" : "input.txt")
                 result2 = result2 + parseInt(highestnumberof12chars);
                 return;
             }
-            let index = string.indexOf(number.toString());
+            let index = string.indexOf(number);
             if (index == -1) {
                 findFirstNumberInmString(string, number - 1)
             }

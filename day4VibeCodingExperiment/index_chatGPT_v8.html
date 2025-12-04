@@ -34,8 +34,7 @@
             const gridRowOffset = (y + 1) * paddedWidth + 1; // +1 for left border
 
             for (let x = 0; x < width; x++) {
-                currentGrid[gridRowOffset + x] =
-                    inputString[inputRowOffset + x] === '@' ? 1 : 0;
+                currentGrid[gridRowOffset + x] = inputString[inputRowOffset + x] === '@' ? 1 : 0;
             }
         }
 

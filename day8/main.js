@@ -64,12 +64,6 @@ fetch(0 ? "sample.txt" : "input.txt")
         console.log(objectData[670].x * objectData[316].x);//8289474414 to high
         //743, 566
         console.log(objectData[743].x * objectData[566].x);//42047840 (wrong input 288509904 to high -> 42047840)
-
-
-       
-
-        
-
         //876 connects?
 
         //583, 415, 867

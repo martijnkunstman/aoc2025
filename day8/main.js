@@ -30,9 +30,7 @@ fetch(0 ? "sample.txt" : "input.txt")
 
                 }
             }
-        }
-
-        
+        }        
 
         let distances = [];
         for (let i = 0; i < objectData.length; i++) {
@@ -43,11 +41,8 @@ fetch(0 ? "sample.txt" : "input.txt")
             }
         }
 
-        
-
-
         distances.sort((a, b) => a.dist - b.dist);
-        //check if there are duplicates in distances
+        //remove duplicates.... (could have done this earlier...)
         removeEveryOdd = (arr) => arr.filter((_, index) => index % 2 === 0);
         distances = removeEveryOdd(distances);
         //to be sure array splice does not f it up during console log....
@@ -68,9 +63,9 @@ fetch(0 ? "sample.txt" : "input.txt")
 
         //583, 415, 867
 
-        distances = distances.slice(0, 5436);///!!!!!!!!!!!!!!!!!!!!!! 5436-1 is de connection...
-        //find connected parent id groups
-        let connectedGroups = []
+        distances = distances.slice(0, 5436);///!!!!!!!!!!!!!!!!!!!!!! 5436-1 is de connection... -> i get a 1000 point group!!!
+        //find connected parent<->id groups
+        let connectedGroups = [] ; //this should have been a set instead.... (but it works anyway...)
         //create groups....
         for (let i = 0; i < distances.length; i++) {
             let found = false;
@@ -84,7 +79,7 @@ fetch(0 ? "sample.txt" : "input.txt")
             }
             if (!found) {
                 connectedGroups.push([distances[i].id, distances[i].parent]);
-                //remove from distances...
+                //remove from distances tro speed up algorithm
                 distances.splice(i, 1);
             }
             for (let ii = 0; ii < distances.length; ii++) {
@@ -92,9 +87,9 @@ fetch(0 ? "sample.txt" : "input.txt")
                     if (connectedGroups[j].includes(distances[ii].id) || connectedGroups[j].includes(distances[ii].parent)) {
                         connectedGroups[j].push(distances[ii].parent);
                         connectedGroups[j].push(distances[ii].id);
-                        connectedGroups[j] = [...new Set(connectedGroups[j])];
-                        distances.splice(ii, 1);
-                        break;
+                        connectedGroups[j] = [...new Set(connectedGroups[j])]; //with a set from the start i don't need to do this..
+                        distances.splice(ii, 1); //speed up...
+                        break; //speed up
                         //ii--; //don't need these....
                         //i--;
                     }

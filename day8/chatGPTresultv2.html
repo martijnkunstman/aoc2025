@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Algorithm Visualization</title>
+    <style>
+        body { margin: 0; overflow: hidden; font-family: monospace; background-color: #1a1a1a; color: white; }
+        #info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            pointer-events: none;
+            max-width: 400px;
+            z-index: 10;
+        }
+        h1 { margin: 0 0 10px 0; font-size: 1.2em; color: #4db8ff; }
+        .step-item { margin-bottom: 5px; font-size: 0.9em; }
+        #current-step { color: #00ff00; font-weight: bold; margin-top: 10px; border-top: 1px solid #555; padding-top: 10px;}
+        #stats { margin-top: 10px; line-height: 1.4em; }
+    </style>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="info">
+        <h1>Algorithm Visualizer</h1>
+        <div id="status">Status: Ready</div>
+        <div id="current-step">Waiting to start...</div>
+        <div id="stats"></div>
+    </div>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // --- 1. CONFIGURATION & STATE ---
+        const DELAY_MS = 1000; // Speed of animation
+        const GROUP_COLORS = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0x00ffff, 0xff00ff, 0xff8800];
+        
+        let scene, camera, renderer, controls;
+        let pointsMeshes = [];
+        let linesMeshes = [];
+        let activeLine = null;
+        
+        // --- 2. DATA PROCESSING ---
+        let inputData = [];
+        let objectData = [];
+        let rawData = "162,817,812-57,618,57-906,360,560-592,479,940-352,342,300-466,668,158-542,29,236-431,825,988-739,650,466-52,470,668-216,146,977-819,987,18-117,168,530-805,96,715-346,949,466-970,615,88-941,993,340-862,61,35-984,92,344-425,690,689";
+
+        inputData = rawData.split("-");
+        for (let i = 0; i < inputData.length; i++) {
+            inputData[i] = inputData[i].split(",").map(Number);
+            // Scaling down by 0.01 to keep scene manageable
+            objectData[i] = { 
+                id: i, 
+                x: inputData[i][0] * 0.01, 
+                y: inputData[i][1] * 0.01, 
+                z: inputData[i][2] * 0.01, 
+                realX: inputData[i][0],
+                realY: inputData[i][1],
+                realZ: inputData[i][2],
+                distances: []
+            };
+        }
+
+        // --- 3. THREE.JS BOILERPLATE ---
+        function init() {
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x222222);
+
+            // Camera setup
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(25, 20, 25);
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            // Controls with Auto Orbit
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.autoRotate = true;       // <--- Auto Orbit Enabled
+            controls.autoRotateSpeed = 1.0;   // <--- Speed of rotation
+
+            // Lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            dirLight.position.set(10, 20, 10);
+            scene.add(dirLight);
+
+            // Create Visual Points
+            const geometry = new THREE.SphereGeometry(0.3, 16, 16);
+            
+            // Bounding Box Calculation
+            const box = new THREE.Box3();
+
+            objectData.forEach(p => {
+                const vec = new THREE.Vector3(p.x, p.y, p.z);
+                
+                // Expand the bounding box to include this point
+                box.expandByPoint(vec);
+
+                const material = new THREE.MeshStandardMaterial({ color: 0x888888 });
+                const sphere = new THREE.Mesh(geometry, material);
+                sphere.position.copy(vec);
+                scene.add(sphere);
+                pointsMeshes.push(sphere);
+            });
+
+            // Add Bounding Box Visual Helper
+            const boxHelper = new THREE.Box3Helper(box, 0xffff00); // Yellow Box
+            scene.add(boxHelper);
+
+            // Center camera target on the center of the bounding box
+            const center = new THREE.Vector3();
+            box.getCenter(center);
+            controls.target.copy(center);
+            
+            // Adjust camera zoom to fit box (roughly)
+            const size = new THREE.Vector3();
+            box.getSize(size);
+            const maxDim = Math.max(size.x, size.y, size.z);
+            camera.position.copy(center);
+            camera.position.z += maxDim * 1.5;
+            camera.position.y += maxDim * 0.5;
+            camera.lookAt(center);
+
+            // Start Animation Loop
+            animate();
+            
+            // Start Algorithm
+            runAlgorithmVisualization();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update(); // Required for auto-rotate
+            renderer.render(scene, camera);
+        }
+
+        // --- 4. VISUALIZATION HELPERS ---
+        function updateStatus(text, stepInfo) {
+            document.getElementById('status').innerText = text;
+            if(stepInfo) document.getElementById('current-step').innerText = stepInfo;
+        }
+
+        function drawActiveLine(p1, p2) {
+            if (activeLine) scene.remove(activeLine);
+            const points = [
+                pointsMeshes[p1].position,
+                pointsMeshes[p2].position
+            ];
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            const material = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: 2 });
+            activeLine = new THREE.Line(geometry, material);
+            scene.add(activeLine);
+        }
+
+        function drawPermanentLine(p1, p2, groupIndex) {
+            const points = [
+                pointsMeshes[p1].position,
+                pointsMeshes[p2].position
+            ];
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            const color = GROUP_COLORS[groupIndex % GROUP_COLORS.length];
+            const material = new THREE.LineBasicMaterial({ color: color, linewidth: 3 });
+            const line = new THREE.Line(geometry, material);
+            scene.add(line);
+            linesMeshes.push(line);
+        }
+
+        function setPointColor(id, groupIndex) {
+            const color = GROUP_COLORS[groupIndex % GROUP_COLORS.length];
+            pointsMeshes[id].material.color.setHex(color);
+            pointsMeshes[id].material.emissive.setHex(color);
+            pointsMeshes[id].material.emissiveIntensity = 0.4;
+        }
+
+        const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+
+        // --- 5. THE ALGORITHM ---
+        
+        async function runAlgorithmVisualization() {
+            updateStatus("Calculating...", "Preprocessing distances");
+            await sleep(1000);
+
+            // A. Calc Distances
+            for (let i = 0; i < inputData.length; i++) {
+                for (let j = 0; j < inputData.length; j++) {
+                    if (i !== j) {
+                        let dist = Math.pow(objectData[i].realX - objectData[j].realX, 2) + 
+                                   Math.pow(objectData[i].realY - objectData[j].realY, 2) + 
+                                   Math.pow(objectData[i].realZ - objectData[j].realZ, 2);
+                        objectData[i].distances.push({ id: j, dist: dist, parent: i });
+                    } else {
+                        objectData[i].distances.push({ id: j, dist: 0, parent: i });
+                    }
+                }
+            }
+
+            let distances = [];
+            for (let i = 0; i < objectData.length; i++) {
+                for (let j = 0; j < objectData[i].distances.length; j++) {
+                    if (objectData[i].distances[j].dist !== 0) {
+                        distances.push(objectData[i].distances[j]);
+                    }
+                }
+            }
+
+            distances.sort((a, b) => a.dist - b.dist);
+            const removeEveryOdd = (arr) => arr.filter((_, index) => index % 2 === 0);
+            distances = removeEveryOdd(distances);
+            distances = distances.slice(0, 10);
+
+            updateStatus("Sorted", "Processing top 10 shortest connections");
+            await sleep(1000);
+
+            // B. Connection Loop
+            let connectedGroups = [];
+            let i = 0;
+            
+            // Using a while loop to handle the splicing logic manually
+            while (i < distances.length) {
+                
+                let currentEdge = distances[i];
+                let p1 = currentEdge.parent;
+                let p2 = currentEdge.id;
+
+                drawActiveLine(p1, p2);
+                updateStatus("Checking Edge", `Point ${p1} ↔ Point ${p2}`);
+                await sleep(DELAY_MS);
+
+                let found = false;
+                for (let j = 0; j < connectedGroups.length; j++) {
+                    if (connectedGroups[j].includes(p2) || connectedGroups[j].includes(p1)) {
+                        found = true;
+                    }
+                }
+
+                if (!found) {
+                    updateStatus("New Group", `Creating Group ${connectedGroups.length + 1}`);
+                    connectedGroups.push([p2, p1]);
+                    
+                    let groupIdx = connectedGroups.length - 1;
+                    drawPermanentLine(p1, p2, groupIdx);
+                    setPointColor(p1, groupIdx);
+                    setPointColor(p2, groupIdx);
+                    
+                    distances.splice(i, 1);
+                    await sleep(DELAY_MS);
+                }
+
+                // Inner Loop
+                let ii = 0;
+                while (ii < distances.length) {
+                    let innerEdge = distances[ii];
+                    let ip1 = innerEdge.parent;
+                    let ip2 = innerEdge.id;
+                    let added = false;
+
+                    for (let j = 0; j < connectedGroups.length; j++) {
+                        if (connectedGroups[j].includes(ip2) || connectedGroups[j].includes(ip1)) {
+                            
+                            drawActiveLine(ip1, ip2);
+                            updateStatus("Merging", `Adding to Group ${j + 1}`);
+                            await sleep(DELAY_MS / 2);
+
+                            connectedGroups[j].push(ip1);
+                            connectedGroups[j].push(ip2);
+                            connectedGroups[j] = [...new Set(connectedGroups[j])]; 
+
+                            drawPermanentLine(ip1, ip2, j);
+                            setPointColor(ip1, j);
+                            setPointColor(ip2, j);
+
+                            distances.splice(ii, 1);
+                            added = true;
+                            break; 
+                        }
+                    }
+                    if (!added) ii++;
+                }
+                
+                // Logic to advance outer loop
+                if (found) {
+                     // Check if current edge was removed by inner loop
+                     if(distances.includes(currentEdge)) i++;
+                }
+                
+                if (activeLine) {
+                     scene.remove(activeLine);
+                     activeLine = null;
+                }
+            }
+
+            // C. Finish
+            updateStatus("Complete", "Final Result Calculated");
+            
+            for (let k = 0; k < connectedGroups.length; k++) {
+                connectedGroups[k] = [...new Set(connectedGroups[k])];
+            }
+            let groupLengths = connectedGroups.map(group => group.length);
+            groupLengths.sort((a, b) => b - a);
+            
+            let res = 0;
+            if(groupLengths.length >= 3) res = groupLengths[0] * groupLengths[1] * groupLengths[2];
+            else if (groupLengths.length == 2) res = groupLengths[0] * groupLengths[1];
+            else if (groupLengths.length == 1) res = groupLengths[0];
+
+            document.getElementById('stats').innerHTML = `
+                Groups Found: ${connectedGroups.length}<br>
+                Group Sizes: ${groupLengths.join(', ')}<br>
+                <strong>Final Result: ${res}</strong>
+            `;
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        init();
+    </script>
+</body>
+</html>

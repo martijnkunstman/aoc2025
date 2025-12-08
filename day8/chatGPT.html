@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect points in 3d space using JavaScript</title>
+</head>
+
+<body>
+    <script>
+
+        let inputData = [];
+        let objectData = [];
+
+        let data = "162,817,812-57,618,57-906,360,560-592,479,940-352,342,300-466,668,158-542,29,236-431,825,988-739,650,466-52,470,668-216,146,977-819,987,18-117,168,530-805,96,715-346,949,466-970,615,88-941,993,340-862,61,35-984,92,344-425,690,689";
+
+        inputData = data.split("-");
+
+        for (let i = 0; i < inputData.length; i++) {
+            inputData[i] = inputData[i].split(",").map(Number);
+            objectData[i] = { id: i, x: inputData[i][0], y: inputData[i][1], z: inputData[i][2], distances: [] };
+        }
+
+        for (let i = 0; i < inputData.length; i++) {
+            for (let j = 0; j < inputData.length; j++) {
+                if (i !== j) {
+                    let dist = Math.pow(inputData[i][0] - inputData[j][0], 2) + Math.pow(inputData[i][1] - inputData[j][1], 2) + Math.pow(inputData[i][2] - inputData[j][2], 2);
+                    objectData[i].distances.push({ id: j, dist: dist, parent: i });
+                }
+                else {
+                    objectData[i].distances.push({ id: j, dist: 0, parent: i });
+
+                }
+            }
+        }
+
+        let distances = [];
+        for (let i = 0; i < objectData.length; i++) {
+            for (let j = 0; j < objectData[i].distances.length; j++) {
+                if (objectData[i].distances[j].dist !== 0) {
+                    distances.push(objectData[i].distances[j]);
+                }
+            }
+        }
+
+        distances.sort((a, b) => a.dist - b.dist);
+        removeEveryOdd = (arr) => arr.filter((_, index) => index % 2 === 0);
+        distances = removeEveryOdd(distances);
+        let distancesCOpy = JSON.parse(JSON.stringify(distances));
+        distances = distances.slice(0, 10);
+        let connectedGroups = [];
+
+        for (let i = 0; i < distances.length; i++) {
+            let found = false;
+            for (let j = 0; j < connectedGroups.length; j++) {
+                if (connectedGroups[j].includes(distances[i].id)) {
+                    found = true;
+                }
+                if (connectedGroups[j].includes(distances[i].parent)) {
+                    found = true;
+                }
+            }
+            if (!found) {
+                connectedGroups.push([distances[i].id, distances[i].parent]);
+                distances.splice(i, 1);
+            }
+            for (let ii = 0; ii < distances.length; ii++) {
+                for (let j = 0; j < connectedGroups.length; j++) {
+                    if (connectedGroups[j].includes(distances[ii].id) || connectedGroups[j].includes(distances[ii].parent)) {
+                        connectedGroups[j].push(distances[ii].parent);
+                        connectedGroups[j].push(distances[ii].id);
+                        connectedGroups[j] = [...new Set(connectedGroups[j])]; //with a set from the start i don't need to do this..
+                        distances.splice(ii, 1);
+                        break;
+                    }
+                }
+            }
+        }
+
+        for (let i = 0; i < connectedGroups.length; i++) {
+            connectedGroups[i] = [...new Set(connectedGroups[i])];
+        }
+
+        let groupLengths = connectedGroups.map(group => group.length);
+        groupLengths.sort((a, b) => b - a);
+
+
+        console.log("Result: " + (groupLengths[0] * groupLengths[1] * groupLengths[2]));
+
+
+
+    </script>
+</body>
+
+</html>

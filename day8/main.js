@@ -50,7 +50,7 @@ fetch(0 ? "sample.txt" : "input.txt")
         //check if there are duplicates in distances
         removeEveryOdd = (arr) => arr.filter((_, index) => index % 2 === 0);
         distances = removeEveryOdd(distances);
-        //get only first 1000 distances
+        //to be sure array splice does not f it up during console log....
         let distancesCOpy = JSON.parse(JSON.stringify(distances));
         console.log("points:");
         console.log(distancesCOpy[5436]);
@@ -61,17 +61,17 @@ fetch(0 ? "sample.txt" : "input.txt")
         //305, 61 -> 5434
 
         //670,316
-        console.log(objectData[670].x * objectData[316].x);//8289474414 to high
+        console.log(objectData[670].x * objectData[316].x);//8289474414 to high answer
         //743, 566
-        console.log(objectData[743].x * objectData[566].x);//42047840 (wrong input 288509904 to high -> 42047840)
+        console.log(objectData[743].x * objectData[566].x);//42047840 yeah!!! (wrong input (typo in number) 288509904 to high -> 42047840)
         //876 connects?
 
         //583, 415, 867
 
-        distances = distances.slice(0, 5436);///!!!!!!!!!!!!!!!!!!!!!! 5436 is de connection...
+        distances = distances.slice(0, 5436);///!!!!!!!!!!!!!!!!!!!!!! 5436-1 is de connection...
         //find connected parent id groups
         let connectedGroups = []
-        //create groups
+        //create groups....
         for (let i = 0; i < distances.length; i++) {
             let found = false;
             for (let j = 0; j < connectedGroups.length; j++) {
@@ -84,7 +84,7 @@ fetch(0 ? "sample.txt" : "input.txt")
             }
             if (!found) {
                 connectedGroups.push([distances[i].id, distances[i].parent]);
-                //remove from distances
+                //remove from distances...
                 distances.splice(i, 1);
             }
             for (let ii = 0; ii < distances.length; ii++) {
@@ -95,39 +95,37 @@ fetch(0 ? "sample.txt" : "input.txt")
                         connectedGroups[j] = [...new Set(connectedGroups[j])];
                         distances.splice(ii, 1);
                         break;
-                        //ii--;
+                        //ii--; //don't need these....
                         //i--;
                     }
                 }
             }
         }
 
-        //remove duplicates in groups
+        //remove duplicates in groups... (maybe overkill.. nut do it anyway to make sure...)
         for (let i = 0; i < connectedGroups.length; i++) {
             connectedGroups[i] = [...new Set(connectedGroups[i])];
         }
 
-        //make array with lengths of groups
+        //make array with lengths of groups...
         let groupLengths = connectedGroups.map(group => group.length);
-        //order by length descending
+        //order by length descending.....
         groupLengths.sort((a, b) => b - a);
-
-
-
+        //debug to see if there are no double groups.
         console.log(connectedGroups);
         console.log("groupLengths:");
         console.log(groupLengths);
 
-
-
         console.log(distances);
-        console.log("Result 1: " + (groupLengths[0] * groupLengths[1] * groupLengths[2]));
+        console.log("Result 2: " + (groupLengths[0] * groupLengths[1] * groupLengths[2]));
 
-        //219539 -> too high
+        //219539 -> too high (first answer -> duplicates in groups)
 
         console.log(objectData);
         //-------------------------- part 2 --------------------------
         // code here....
+
+        // i made part 1 into part 2.
 
 
         console.log("Result 2: " + result2);

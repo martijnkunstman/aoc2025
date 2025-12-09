@@ -2120,6 +2120,7 @@ for (let s = 0; s < squares.length; s++) {
         if (squares[s].x1 == 94539 && squares[s].y1 == 50089) {
             //this is the bottom point, so y2 shpould be more than y1
             if (squares[s].y2 > squares[s].y1) {
+                //i dont need this one because it is the smaller square...
                 pointInSquare = true;
             }
         }
@@ -2138,6 +2139,7 @@ for (let s = 0; s < squares.length; s++) {
         if (squares[s].x2 == 94539 && squares[s].y2 == 48701) {
             //this is the top point, so y1 should be less than y2
             if (squares[s].y1 < squares[s].y2) {
+                //i dont need this one because it is the smaller square...
                 pointInSquare = true;
             }
         }
@@ -2147,6 +2149,42 @@ for (let s = 0; s < squares.length; s++) {
         }
     }
 }
+
+let resultSquaresFalse = [];
+for (let s = 0; s < squares.length; s++) {
+        let pointInSquare = false;
+        if (squares[s].x1 == 94539 && squares[s].y1 == 50089) {
+            //this is the bottom point, so y2 shpould be more than y1
+            if (squares[s].y2 > squares[s].y1) {
+                //i dont need this one because it is the smaller square...
+                pointInSquare = true;
+            }
+        }
+        if (squares[s].x1 == 94539 && squares[s].y1 == 48701) {
+            //this is the top point, so y2 should be less than y1
+            if (squares[s].y2 < squares[s].y1) {
+                pointInSquare = true;
+            }
+        }
+        if (squares[s].x2 == 94539 && squares[s].y2 == 50089) {
+            //this is the bottom point, so y1 should be more than y2
+            if (squares[s].y1 > squares[s].y2) {
+                pointInSquare = true;
+            }
+        }
+        if (squares[s].x2 == 94539 && squares[s].y2 == 48701) {
+            //this is the top point, so y1 should be less than y2
+            if (squares[s].y1 < squares[s].y2) {
+                //i dont need this one because it is the smaller square...
+                pointInSquare = true;
+            }
+        }
+        if (pointInSquare&&squares[s].pointInside) {
+            //result2 = squares[s].surface;
+            resultSquaresFalse.push(squares[s]);
+        }
+}
+
 
 console.log(resultSquares);
 
@@ -2169,7 +2207,7 @@ drawSquare(0);
 
 function drawSquare(r) {
     drawpoints();
-    infoDiv.innerHTML = "Drawing square " + (r + 1) + " of " + resultSquares.length + " (surface: " + resultSquares[r].surface + ")";
+    infoDiv.innerHTML = "Drawing OK square " + (r + 1) + " of " + resultSquares.length + " (surface: " + resultSquares[r].surface + ")";
     ctx.strokeStyle = 'blue';
     ctx.fillStyle = 'rgba('+(r*(255/83))+','+(255-r*(255/83))+',0, 1)';
     ctx.beginPath();
@@ -2182,11 +2220,40 @@ function drawSquare(r) {
     ctx.stroke();
     ctx.fill();
     if (r < resultSquares.length - 1) {
-        setTimeout(() => { drawSquare(r + 1); }, 300);
+        if (r==0)
+        {
+        setTimeout(() => { drawSquare(r + 1); }, 1000);
+        }
+        else{
+        setTimeout(() => { drawSquare(r + 1); }, 100);
+        }
     }
     else{
         r = 0;
-        setTimeout(() => { drawSquare(r); }, 300);
+        setTimeout(() => { drawSquareFalse(r); }, 100);
+    }
+}
+
+function drawSquareFalse(r) {
+    drawpoints();
+    infoDiv.innerHTML = "Drawing NOT OK square " + (r + 1) + " of " + resultSquaresFalse.length + " (surface: " + resultSquaresFalse[r].surface + ")";
+    ctx.strokeStyle = 'blue';
+    ctx.fillStyle = 'rgba(255,0,0, 1)';
+    ctx.beginPath();
+    ctx.rect(
+        Math.min(resultSquaresFalse[r].x1, resultSquaresFalse[r].x2) * factor,
+        Math.min(resultSquaresFalse[r].y1, resultSquaresFalse[r].y2) * factor,
+        (Math.abs(resultSquaresFalse[r].x1 - resultSquaresFalse[r].x2) + 1) * factor,
+        (Math.abs(resultSquaresFalse[r].y1 - resultSquaresFalse[r].y2) + 1) * factor
+    );
+    ctx.stroke();
+    ctx.fill();
+    if (r < resultSquaresFalse.length - 1) {
+        setTimeout(() => { drawSquareFalse(r + 1); }, 50);
+    }
+    else{
+        r = 0;
+        setTimeout(() => { drawSquare(r) }, 1000);
     }
 }
 

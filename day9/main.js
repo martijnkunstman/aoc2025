@@ -54,7 +54,7 @@ fetch(0 ? "sample.txt" : "input.txt")
         let ctx = canvas.getContext('2d');
         ctx.strokeStyle = 'red';
         ctx.beginPath();
-        let factor = 1 / 100;
+        let factor = 1 / 100;//to fit is on the canvas
         for (let i = 0; i < inputData.length; i++) {
             if (i > 0) {
                 ctx.lineTo(inputData[i][0] * factor, inputData[i][1] * factor);
@@ -65,7 +65,7 @@ fetch(0 ? "sample.txt" : "input.txt")
         ctx.closePath();
         ctx.stroke();
 
-        //is see now.... there is only straight lines between points
+        //is see now.... there is only straight lines between points (did not check but assumed)
         //i also realise there is only the bggest squares possible if there is not a point inside AND it contains one of the weird point..
         //BUT than there is only a combination possible where there is a sqquare ABOVE or UNDER the two special points....
        

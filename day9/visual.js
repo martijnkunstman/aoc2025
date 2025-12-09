@@ -4,185 +4,2181 @@ let part1Numners = [];
 let result1 = 0;
 let result2 = 0;
 
-fetch(0 ? "sample.txt" : "input.txt")
-    .then(response => response.text())
-    .then(data => {
-        //-------------------------- parse data --------------------------
 
-        inputData = data.split("\r\n");
 
-        for (let i = 0; i < inputData.length; i++) {
-            inputData[i] = inputData[i].split(',').map(Number);
+inputData =
+
+    [
+        [
+            98149,
+            50096
+        ],
+        [
+            98149,
+            51320
+        ],
+        [
+            98283,
+            51320
+        ],
+        [
+            98283,
+            52552
+        ],
+        [
+            98418,
+            52552
+        ],
+        [
+            98418,
+            53717
+        ],
+        [
+            97561,
+            53717
+        ],
+        [
+            97561,
+            54916
+        ],
+        [
+            97402,
+            54916
+        ],
+        [
+            97402,
+            56191
+        ],
+        [
+            97852,
+            56191
+        ],
+        [
+            97852,
+            57374
+        ],
+        [
+            97504,
+            57374
+        ],
+        [
+            97504,
+            58479
+        ],
+        [
+            96769,
+            58479
+        ],
+        [
+            96769,
+            59792
+        ],
+        [
+            97171,
+            59792
+        ],
+        [
+            97171,
+            60938
+        ],
+        [
+            96714,
+            60938
+        ],
+        [
+            96714,
+            62177
+        ],
+        [
+            96649,
+            62177
+        ],
+        [
+            96649,
+            63356
+        ],
+        [
+            96328,
+            63356
+        ],
+        [
+            96328,
+            64508
+        ],
+        [
+            95920,
+            64508
+        ],
+        [
+            95920,
+            65463
+        ],
+        [
+            94945,
+            65463
+        ],
+        [
+            94945,
+            66631
+        ],
+        [
+            94632,
+            66631
+        ],
+        [
+            94632,
+            67713
+        ],
+        [
+            94088,
+            67713
+        ],
+        [
+            94088,
+            69039
+        ],
+        [
+            94123,
+            69039
+        ],
+        [
+            94123,
+            70099
+        ],
+        [
+            93515,
+            70099
+        ],
+        [
+            93515,
+            71061
+        ],
+        [
+            92720,
+            71061
+        ],
+        [
+            92720,
+            72524
+        ],
+        [
+            92910,
+            72524
+        ],
+        [
+            92910,
+            73136
+        ],
+        [
+            91489,
+            73136
+        ],
+        [
+            91489,
+            74419
+        ],
+        [
+            91293,
+            74419
+        ],
+        [
+            91293,
+            75648
+        ],
+        [
+            90966,
+            75648
+        ],
+        [
+            90966,
+            76623
+        ],
+        [
+            90221,
+            76623
+        ],
+        [
+            90221,
+            77323
+        ],
+        [
+            89089,
+            77323
+        ],
+        [
+            89089,
+            78420
+        ],
+        [
+            88541,
+            78420
+        ],
+        [
+            88541,
+            79539
+        ],
+        [
+            88005,
+            79539
+        ],
+        [
+            88005,
+            80155
+        ],
+        [
+            86832,
+            80155
+        ],
+        [
+            86832,
+            81503
+        ],
+        [
+            86549,
+            81503
+        ],
+        [
+            86549,
+            82398
+        ],
+        [
+            85716,
+            82398
+        ],
+        [
+            85716,
+            82997
+        ],
+        [
+            84574,
+            82997
+        ],
+        [
+            84574,
+            84354
+        ],
+        [
+            84217,
+            84354
+        ],
+        [
+            84217,
+            84671
+        ],
+        [
+            82826,
+            84671
+        ],
+        [
+            82826,
+            85481
+        ],
+        [
+            81928,
+            85481
+        ],
+        [
+            81928,
+            86391
+        ],
+        [
+            81114,
+            86391
+        ],
+        [
+            81114,
+            87480
+        ],
+        [
+            80436,
+            87480
+        ],
+        [
+            80436,
+            88103
+        ],
+        [
+            79372,
+            88103
+        ],
+        [
+            79372,
+            89046
+        ],
+        [
+            78552,
+            89046
+        ],
+        [
+            78552,
+            89441
+        ],
+        [
+            77335,
+            89441
+        ],
+        [
+            77335,
+            89838
+        ],
+        [
+            76141,
+            89838
+        ],
+        [
+            76141,
+            90654
+        ],
+        [
+            75227,
+            90654
+        ],
+        [
+            75227,
+            91365
+        ],
+        [
+            74239,
+            91365
+        ],
+        [
+            74239,
+            92081
+        ],
+        [
+            73247,
+            92081
+        ],
+        [
+            73247,
+            92782
+        ],
+        [
+            72239,
+            92782
+        ],
+        [
+            72239,
+            93026
+        ],
+        [
+            70998,
+            93026
+        ],
+        [
+            70998,
+            93413
+        ],
+        [
+            69842,
+            93413
+        ],
+        [
+            69842,
+            94169
+        ],
+        [
+            68850,
+            94169
+        ],
+        [
+            68850,
+            94753
+        ],
+        [
+            67772,
+            94753
+        ],
+        [
+            67772,
+            94968
+        ],
+        [
+            66552,
+            94968
+        ],
+        [
+            66552,
+            95166
+        ],
+        [
+            65337,
+            95166
+        ],
+        [
+            65337,
+            96281
+        ],
+        [
+            64419,
+            96281
+        ],
+        [
+            64419,
+            96109
+        ],
+        [
+            63094,
+            96109
+        ],
+        [
+            63094,
+            96659
+        ],
+        [
+            61981,
+            96659
+        ],
+        [
+            61981,
+            96466
+        ],
+        [
+            60685,
+            96466
+        ],
+        [
+            60685,
+            96669
+        ],
+        [
+            59493,
+            96669
+        ],
+        [
+            59493,
+            97420
+        ],
+        [
+            58401,
+            97420
+        ],
+        [
+            58401,
+            97047
+        ],
+        [
+            57111,
+            97047
+        ],
+        [
+            57111,
+            98113
+        ],
+        [
+            56029,
+            98113
+        ],
+        [
+            56029,
+            97715
+        ],
+        [
+            54755,
+            97715
+        ],
+        [
+            54755,
+            97760
+        ],
+        [
+            53541,
+            97760
+        ],
+        [
+            53541,
+            97640
+        ],
+        [
+            52320,
+            97640
+        ],
+        [
+            52320,
+            98082
+        ],
+        [
+            51122,
+            98082
+        ],
+        [
+            51122,
+            98415
+        ],
+        [
+            49903,
+            98415
+        ],
+        [
+            49903,
+            97492
+        ],
+        [
+            48701,
+            97492
+        ],
+        [
+            48701,
+            98259
+        ],
+        [
+            47455,
+            98259
+        ],
+        [
+            47455,
+            97501
+        ],
+        [
+            46287,
+            97501
+        ],
+        [
+            46287,
+            97603
+        ],
+        [
+            45063,
+            97603
+        ],
+        [
+            45063,
+            97948
+        ],
+        [
+            43795,
+            97948
+        ],
+        [
+            43795,
+            97422
+        ],
+        [
+            42638,
+            97422
+        ],
+        [
+            42638,
+            96938
+        ],
+        [
+            41490,
+            96938
+        ],
+        [
+            41490,
+            96859
+        ],
+        [
+            40272,
+            96859
+        ],
+        [
+            40272,
+            96275
+        ],
+        [
+            39163,
+            96275
+        ],
+        [
+            39163,
+            96615
+        ],
+        [
+            37830,
+            96615
+        ],
+        [
+            37830,
+            95679
+        ],
+        [
+            36830,
+            95679
+        ],
+        [
+            36830,
+            95815
+        ],
+        [
+            35524,
+            95815
+        ],
+        [
+            35524,
+            95641
+        ],
+        [
+            34297,
+            95641
+        ],
+        [
+            34297,
+            94734
+        ],
+        [
+            33330,
+            94734
+        ],
+        [
+            33330,
+            94188
+        ],
+        [
+            32246,
+            94188
+        ],
+        [
+            32246,
+            93771
+        ],
+        [
+            31112,
+            93771
+        ],
+        [
+            31112,
+            93562
+        ],
+        [
+            29878,
+            93562
+        ],
+        [
+            29878,
+            92941
+        ],
+        [
+            28829,
+            92941
+        ],
+        [
+            28829,
+            92633
+        ],
+        [
+            27621,
+            92633
+        ],
+        [
+            27621,
+            92127
+        ],
+        [
+            26507,
+            92127
+        ],
+        [
+            26507,
+            90926
+        ],
+        [
+            25797,
+            90926
+        ],
+        [
+            25797,
+            91063
+        ],
+        [
+            24291,
+            91063
+        ],
+        [
+            24291,
+            89724
+        ],
+        [
+            23705,
+            89724
+        ],
+        [
+            23705,
+            89668
+        ],
+        [
+            22272,
+            89668
+        ],
+        [
+            22272,
+            88546
+        ],
+        [
+            21576,
+            88546
+        ],
+        [
+            21576,
+            88024
+        ],
+        [
+            20445,
+            88024
+        ],
+        [
+            20445,
+            87398
+        ],
+        [
+            19380,
+            87398
+        ],
+        [
+            19380,
+            86115
+        ],
+        [
+            18869,
+            86115
+        ],
+        [
+            18869,
+            85268
+        ],
+        [
+            18007,
+            85268
+        ],
+        [
+            18007,
+            84643
+        ],
+        [
+            16936,
+            84643
+        ],
+        [
+            16936,
+            83906
+        ],
+        [
+            15957,
+            83906
+        ],
+        [
+            15957,
+            82842
+        ],
+        [
+            15310,
+            82842
+        ],
+        [
+            15310,
+            82330
+        ],
+        [
+            14071,
+            82330
+        ],
+        [
+            14071,
+            80937
+        ],
+        [
+            13816,
+            80937
+        ],
+        [
+            13816,
+            80518
+        ],
+        [
+            12418,
+            80518
+        ],
+        [
+            12418,
+            79314
+        ],
+        [
+            11971,
+            79314
+        ],
+        [
+            11971,
+            78448
+        ],
+        [
+            11096,
+            78448
+        ],
+        [
+            11096,
+            77441
+        ],
+        [
+            10404,
+            77441
+        ],
+        [
+            10404,
+            76510
+        ],
+        [
+            9599,
+            76510
+        ],
+        [
+            9599,
+            75048
+        ],
+        [
+            9633,
+            75048
+        ],
+        [
+            9633,
+            74084
+        ],
+        [
+            8898,
+            74084
+        ],
+        [
+            8898,
+            73037
+        ],
+        [
+            8297,
+            73037
+        ],
+        [
+            8297,
+            71955
+        ],
+        [
+            7763,
+            71955
+        ],
+        [
+            7763,
+            71218
+        ],
+        [
+            6522,
+            71218
+        ],
+        [
+            6522,
+            69800
+        ],
+        [
+            6678,
+            69800
+        ],
+        [
+            6678,
+            68987
+        ],
+        [
+            5508,
+            68987
+        ],
+        [
+            5508,
+            67570
+        ],
+        [
+            5755,
+            67570
+        ],
+        [
+            5755,
+            66636
+        ],
+        [
+            4802,
+            66636
+        ],
+        [
+            4802,
+            65333
+        ],
+        [
+            4844,
+            65333
+        ],
+        [
+            4844,
+            64195
+        ],
+        [
+            4435,
+            64195
+        ],
+        [
+            4435,
+            63235
+        ],
+        [
+            3393,
+            63235
+        ],
+        [
+            3393,
+            61931
+        ],
+        [
+            3537,
+            61931
+        ],
+        [
+            3537,
+            60707
+        ],
+        [
+            3437,
+            60707
+        ],
+        [
+            3437,
+            59485
+        ],
+        [
+            3372,
+            59485
+        ],
+        [
+            3372,
+            58325
+        ],
+        [
+            3010,
+            58325
+        ],
+        [
+            3010,
+            57128
+        ],
+        [
+            2838,
+            57128
+        ],
+        [
+            2838,
+            55962
+        ],
+        [
+            2421,
+            55962
+        ],
+        [
+            2421,
+            54802
+        ],
+        [
+            1820,
+            54802
+        ],
+        [
+            1820,
+            53521
+        ],
+        [
+            2508,
+            53521
+        ],
+        [
+            2508,
+            52311
+        ],
+        [
+            2539,
+            52311
+        ],
+        [
+            2539,
+            51115
+        ],
+        [
+            2219,
+            51115
+        ],
+        [
+            2219,
+            50089
+        ],
+        [
+            94539,
+            50089
+        ],
+        [
+            94539,
+            48701
+        ],
+        [
+            2499,
+            48701
+        ],
+        [
+            2499,
+            47465
+        ],
+        [
+            1920,
+            47465
+        ],
+        [
+            1920,
+            46251
+        ],
+        [
+            2036,
+            46251
+        ],
+        [
+            2036,
+            45011
+        ],
+        [
+            1902,
+            45011
+        ],
+        [
+            1902,
+            43822
+        ],
+        [
+            2259,
+            43822
+        ],
+        [
+            2259,
+            42693
+        ],
+        [
+            2933,
+            42693
+        ],
+        [
+            2933,
+            41483
+        ],
+        [
+            3024,
+            41483
+        ],
+        [
+            3024,
+            40315
+        ],
+        [
+            3347,
+            40315
+        ],
+        [
+            3347,
+            39095
+        ],
+        [
+            3432,
+            39095
+        ],
+        [
+            3432,
+            37844
+        ],
+        [
+            3437,
+            37844
+        ],
+        [
+            3437,
+            36624
+        ],
+        [
+            3606,
+            36624
+        ],
+        [
+            3606,
+            35415
+        ],
+        [
+            3840,
+            35415
+        ],
+        [
+            3840,
+            34519
+        ],
+        [
+            5004,
+            34519
+        ],
+        [
+            5004,
+            33174
+        ],
+        [
+            4846,
+            33174
+        ],
+        [
+            4846,
+            32153
+        ],
+        [
+            5579,
+            32153
+        ],
+        [
+            5579,
+            31033
+        ],
+        [
+            6045,
+            31033
+        ],
+        [
+            6045,
+            29764
+        ],
+        [
+            6189,
+            29764
+        ],
+        [
+            6189,
+            28954
+        ],
+        [
+            7311,
+            28954
+        ],
+        [
+            7311,
+            27722
+        ],
+        [
+            7558,
+            27722
+        ],
+        [
+            7558,
+            26834
+        ],
+        [
+            8459,
+            26834
+        ],
+        [
+            8459,
+            25657
+        ],
+        [
+            8836,
+            25657
+        ],
+        [
+            8836,
+            24362
+        ],
+        [
+            9050,
+            24362
+        ],
+        [
+            9050,
+            23308
+        ],
+        [
+            9676,
+            23308
+        ],
+        [
+            9676,
+            22505
+        ],
+        [
+            10665,
+            22505
+        ],
+        [
+            10665,
+            21542
+        ],
+        [
+            11408,
+            21542
+        ],
+        [
+            11408,
+            20615
+        ],
+        [
+            12195,
+            20615
+        ],
+        [
+            12195,
+            19321
+        ],
+        [
+            12528,
+            19321
+        ],
+        [
+            12528,
+            18910
+        ],
+        [
+            13931,
+            18910
+        ],
+        [
+            13931,
+            18053
+        ],
+        [
+            14782,
+            18053
+        ],
+        [
+            14782,
+            16947
+        ],
+        [
+            15368,
+            16947
+        ],
+        [
+            15368,
+            15986
+        ],
+        [
+            16122,
+            15986
+        ],
+        [
+            16122,
+            15275
+        ],
+        [
+            17123,
+            15275
+        ],
+        [
+            17123,
+            14036
+        ],
+        [
+            17638,
+            14036
+        ],
+        [
+            17638,
+            13749
+        ],
+        [
+            19005,
+            13749
+        ],
+        [
+            19005,
+            12493
+        ],
+        [
+            19542,
+            12493
+        ],
+        [
+            19542,
+            11719
+        ],
+        [
+            20490,
+            11719
+        ],
+        [
+            20490,
+            11063
+        ],
+        [
+            21528,
+            11063
+        ],
+        [
+            21528,
+            10484
+        ],
+        [
+            22613,
+            10484
+        ],
+        [
+            22613,
+            9632
+        ],
+        [
+            23511,
+            9632
+        ],
+        [
+            23511,
+            9231
+        ],
+        [
+            24702,
+            9231
+        ],
+        [
+            24702,
+            8969
+        ],
+        [
+            25957,
+            8969
+        ],
+        [
+            25957,
+            7711
+        ],
+        [
+            26638,
+            7711
+        ],
+        [
+            26638,
+            7493
+        ],
+        [
+            27904,
+            7493
+        ],
+        [
+            27904,
+            6884
+        ],
+        [
+            28957,
+            6884
+        ],
+        [
+            28957,
+            6354
+        ],
+        [
+            30051,
+            6354
+        ],
+        [
+            30051,
+            5683
+        ],
+        [
+            31086,
+            5683
+        ],
+        [
+            31086,
+            5537
+        ],
+        [
+            32342,
+            5537
+        ],
+        [
+            32342,
+            4632
+        ],
+        [
+            33300,
+            4632
+        ],
+        [
+            33300,
+            4368
+        ],
+        [
+            34504,
+            4368
+        ],
+        [
+            34504,
+            4004
+        ],
+        [
+            35669,
+            4004
+        ],
+        [
+            35669,
+            3899
+        ],
+        [
+            36908,
+            3899
+        ],
+        [
+            36908,
+            3887
+        ],
+        [
+            38158,
+            3887
+        ],
+        [
+            38158,
+            2838
+        ],
+        [
+            39155,
+            2838
+        ],
+        [
+            39155,
+            2664
+        ],
+        [
+            40370,
+            2664
+        ],
+        [
+            40370,
+            2502
+        ],
+        [
+            41585,
+            2502
+        ],
+        [
+            41585,
+            2442
+        ],
+        [
+            42811,
+            2442
+        ],
+        [
+            42811,
+            2202
+        ],
+        [
+            44009,
+            2202
+        ],
+        [
+            44009,
+            1773
+        ],
+        [
+            45193,
+            1773
+        ],
+        [
+            45193,
+            1779
+        ],
+        [
+            46424,
+            1779
+        ],
+        [
+            46424,
+            2113
+        ],
+        [
+            47667,
+            2113
+        ],
+        [
+            47667,
+            2461
+        ],
+        [
+            48890,
+            2461
+        ],
+        [
+            48890,
+            1879
+        ],
+        [
+            50096,
+            1879
+        ],
+        [
+            50096,
+            2150
+        ],
+        [
+            51308,
+            2150
+        ],
+        [
+            51308,
+            2067
+        ],
+        [
+            52526,
+            2067
+        ],
+        [
+            52526,
+            2162
+        ],
+        [
+            53739,
+            2162
+        ],
+        [
+            53739,
+            2567
+        ],
+        [
+            54919,
+            2567
+        ],
+        [
+            54919,
+            2277
+        ],
+        [
+            56174,
+            2277
+        ],
+        [
+            56174,
+            2732
+        ],
+        [
+            57337,
+            2732
+        ],
+        [
+            57337,
+            2982
+        ],
+        [
+            58524,
+            2982
+        ],
+        [
+            58524,
+            2825
+        ],
+        [
+            59792,
+            2825
+        ],
+        [
+            59792,
+            3597
+        ],
+        [
+            60865,
+            3597
+        ],
+        [
+            60865,
+            3656
+        ],
+        [
+            62098,
+            3656
+        ],
+        [
+            62098,
+            4231
+        ],
+        [
+            63195,
+            4231
+        ],
+        [
+            63195,
+            3956
+        ],
+        [
+            64547,
+            3956
+        ],
+        [
+            64547,
+            4822
+        ],
+        [
+            65543,
+            4822
+        ],
+        [
+            65543,
+            5323
+        ],
+        [
+            66648,
+            5323
+        ],
+        [
+            66648,
+            5708
+        ],
+        [
+            67794,
+            5708
+        ],
+        [
+            67794,
+            6332
+        ],
+        [
+            68842,
+            6332
+        ],
+        [
+            68842,
+            6545
+        ],
+        [
+            70071,
+            6545
+        ],
+        [
+            70071,
+            7095
+        ],
+        [
+            71152,
+            7095
+        ],
+        [
+            71152,
+            7819
+        ],
+        [
+            72140,
+            7819
+        ],
+        [
+            72140,
+            8090
+        ],
+        [
+            73371,
+            8090
+        ],
+        [
+            73371,
+            8558
+        ],
+        [
+            74506,
+            8558
+        ],
+        [
+            74506,
+            9355
+        ],
+        [
+            75446,
+            9355
+        ],
+        [
+            75446,
+            9575
+        ],
+        [
+            76758,
+            9575
+        ],
+        [
+            76758,
+            10546
+        ],
+        [
+            77577,
+            10546
+        ],
+        [
+            77577,
+            11065
+        ],
+        [
+            78709,
+            11065
+        ],
+        [
+            78709,
+            12226
+        ],
+        [
+            79360,
+            12226
+        ],
+        [
+            79360,
+            13026
+        ],
+        [
+            80271,
+            13026
+        ],
+        [
+            80271,
+            13333
+        ],
+        [
+            81605,
+            13333
+        ],
+        [
+            81605,
+            14454
+        ],
+        [
+            82243,
+            14454
+        ],
+        [
+            82243,
+            15429
+        ],
+        [
+            82993,
+            15429
+        ],
+        [
+            82993,
+            16448
+        ],
+        [
+            83686,
+            16448
+        ],
+        [
+            83686,
+            16730
+        ],
+        [
+            85140,
+            16730
+        ],
+        [
+            85140,
+            17580
+        ],
+        [
+            86027,
+            17580
+        ],
+        [
+            86027,
+            18788
+        ],
+        [
+            86504,
+            18788
+        ],
+        [
+            86504,
+            19587
+        ],
+        [
+            87450,
+            19587
+        ],
+        [
+            87450,
+            20649
+        ],
+        [
+            88074,
+            20649
+        ],
+        [
+            88074,
+            21621
+        ],
+        [
+            88808,
+            21621
+        ],
+        [
+            88808,
+            22620
+        ],
+        [
+            89504,
+            22620
+        ],
+        [
+            89504,
+            23897
+        ],
+        [
+            89778,
+            23897
+        ],
+        [
+            89778,
+            24528
+        ],
+        [
+            91047,
+            24528
+        ],
+        [
+            91047,
+            25567
+        ],
+        [
+            91695,
+            25567
+        ],
+        [
+            91695,
+            26551
+        ],
+        [
+            92445,
+            26551
+        ],
+        [
+            92445,
+            27672
+        ],
+        [
+            92953,
+            27672
+        ],
+        [
+            92953,
+            29003
+        ],
+        [
+            93020,
+            29003
+        ],
+        [
+            93020,
+            29887
+        ],
+        [
+            94005,
+            29887
+        ],
+        [
+            94005,
+            31018
+        ],
+        [
+            94478,
+            31018
+        ],
+        [
+            94478,
+            32106
+        ],
+        [
+            95057,
+            32106
+        ],
+        [
+            95057,
+            33388
+        ],
+        [
+            95127,
+            33388
+        ],
+        [
+            95127,
+            34671
+        ],
+        [
+            95140,
+            34671
+        ],
+        [
+            95140,
+            35702
+        ],
+        [
+            95891,
+            35702
+        ],
+        [
+            95891,
+            36936
+        ],
+        [
+            96002,
+            36936
+        ],
+        [
+            96002,
+            38053
+        ],
+        [
+            96524,
+            38053
+        ],
+        [
+            96524,
+            39176
+        ],
+        [
+            97068,
+            39176
+        ],
+        [
+            97068,
+            40340
+        ],
+        [
+            97484,
+            40340
+        ],
+        [
+            97484,
+            41668
+        ],
+        [
+            97025,
+            41668
+        ],
+        [
+            97025,
+            42848
+        ],
+        [
+            97316,
+            42848
+        ],
+        [
+            97316,
+            44004
+        ],
+        [
+            97834,
+            44004
+        ],
+        [
+            97834,
+            45193
+        ],
+        [
+            98224,
+            45193
+        ],
+        [
+            98224,
+            46461
+        ],
+        [
+            97726,
+            46461
+        ],
+        [
+            97726,
+            47670
+        ],
+        [
+            97819,
+            47670
+        ],
+        [
+            97819,
+            48871
+        ],
+        [
+            98356,
+            48871
+        ],
+        [
+            98356,
+            50096
+        ]
+    ]
+
+
+
+//-------------------------- part 1 -------------------------- 
+
+for (let i = 0; i < inputData.length; i++) {
+    for (let j = i + 1; j < inputData.length; j++) {
+        //i forggot to add the +1 in the first run
+        let width = Math.abs(inputData[i][0] - inputData[j][0]) + 1;
+        let height = Math.abs(inputData[i][1] - inputData[j][1]) + 1;
+        let surface = width * height;
+        part1Numners.push(surface);
+    }
+}
+//nice and easy find the highest number with the Math.max...
+let getHighest = Math.max(...part1Numners);
+result1 = getHighest;//why did i do this? and not straight away result1 = Math.max(...part1Numners);
+
+//console.log(inputData); //to see if my data is parsed right
+
+console.log("Result 1: " + result1);//
+
+//4746100212 to low....
+//4746238001 is right....
+
+//-------------------------- part 2 -------------------------- 
+
+//visualise the line between points on a canvas to get a sense of what we are working with...
+//analyse the dimmensions of the grid by eye studing the inputdata...
+//we seem to have max 100000 x 100000 grid.... 
+
+//that is not going to work on an uint8array grid... I(i tried...)
+//let grid = new Uint8Array(100000 * 100000); //no way
+
+let canvas = document.createElement('canvas');
+canvas.id = "myCanvas";
+canvas.width = 1000;
+canvas.height = 1000;
+canvas.style.border = "1px solid black";
+document.body.appendChild(canvas);
+let ctx = canvas.getContext('2d');
+ctx.strokeStyle = 'red';
+let factor = 1 / 100;
+
+
+function drawpoints() {
+    //clean canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = 'blue';
+    //fill 
+    ctx.fillStyle = 'rgba(0,0,255,0.1)';
+    ctx.beginPath();
+    for (let i = 0; i < inputData.length; i++) {
+        if (i > 0) {
+            ctx.lineTo(inputData[i][0] * factor, inputData[i][1] * factor);
+        } else {
+            ctx.moveTo(inputData[i][0] * factor, inputData[i][1] * factor);
         }
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+}
 
-        //-------------------------- part 1 -------------------------- 
+//is see now.... there is only straight lines between points (did not check but assumed)
+//i also realise there is only the bggest squares possible if there is not a point inside AND it contains one of the weird point..
+//BUT than there is only a combination possible where there is a sqquare ABOVE or UNDER the two special points....
 
-        for (let i = 0; i < inputData.length; i++) {
-            for (let j = i + 1; j < inputData.length; j++) {
-                //i forggot to add the +1 in the first run
-                let width = Math.abs(inputData[i][0] - inputData[j][0]) + 1;
-                let height = Math.abs(inputData[i][1] - inputData[j][1]) + 1;
-                let surface = width * height;
-                part1Numners.push(surface);
+//start taking it down step by step.......
+
+//make an array of all the squares and order them big to low
+let squares = [];
+for (let i = 0; i < inputData.length; i++) {
+    for (let j = i + 1; j < inputData.length; j++) {
+        let width = Math.abs(inputData[i][0] - inputData[j][0]) + 1;
+        let height = Math.abs(inputData[i][1] - inputData[j][1]) + 1;
+        let surface = width * height;
+        squares.push({ x1: inputData[i][0], y1: inputData[i][1], x2: inputData[j][0], y2: inputData[j][1], surface: surface });
+    }
+}
+//nice and easy sort it....
+squares.sort((a, b) => b.surface - a.surface);
+
+//now check for all the squares if there is a point in them from the top down
+// (i thought first this would give a solution....)
+for (let s = 0; s < squares.length; s++) {
+    let hasPointInside = false;
+    squares[s].pointInside = false;
+    for (let p = 0; p < inputData.length; p++) {
+        if (inputData[p][0] > Math.min(squares[s].x1, squares[s].x2) &&
+            inputData[p][0] < Math.max(squares[s].x1, squares[s].x2) &&
+            inputData[p][1] > Math.min(squares[s].y1, squares[s].y2) &&
+            inputData[p][1] < Math.max(squares[s].y1, squares[s].y2)) {
+            hasPointInside = true;
+            squares[s].pointInside = true;
+            break;
+        }
+    }
+}
+//to check if the squares were made right...
+console.log(squares);
+
+//
+//find first square without a point inside (based on previous check)
+//
+// (that is not enoough... or not even neeeded, did not check that...)
+//
+//NOW the magic....
+//
+//and that has point(94539,50089) or point(94539,48701)
+//
+//but not cross the line!!!!! (so points a at the right side top or down from the special point... i had this wronmg firsttime...)
+//
+
+
+//make a new squares array to store valid rsults from top to bottom
+//..
+
+let resultSquares = [];
+
+for (let s = 0; s < squares.length; s++) {
+    if (!squares[s].pointInside) {
+        let pointInSquare = false;
+        if (squares[s].x1 == 94539 && squares[s].y1 == 50089) {
+            //this is the bottom point, so y2 shpould be more than y1
+            if (squares[s].y2 > squares[s].y1) {
+                pointInSquare = true;
             }
         }
-        //nice and easy find the highest number with the Math.max...
-        let getHighest = Math.max(...part1Numners);
-        result1 = getHighest;//why did i do this? and not straight away result1 = Math.max(...part1Numners);
-
-        //console.log(inputData); //to see if my data is parsed right
-
-        console.log("Result 1: " + result1);//
-
-        //4746100212 to low....
-        //4746238001 is right....
-
-        //-------------------------- part 2 -------------------------- 
-
-        //visualise the line between points on a canvas to get a sense of what we are working with...
-        //analyse the dimmensions of the grid by eye studing the inputdata...
-        //we seem to have max 100000 x 100000 grid.... 
-
-        //that is not going to work on an uint8array grid... I(i tried...)
-        //let grid = new Uint8Array(100000 * 100000); //no way
-
-        let canvas = document.createElement('canvas');
-        canvas.width = 1000;
-        canvas.height = 1000;
-        canvas.style.border = "1px solid black";
-        document.body.appendChild(canvas);
-        let ctx = canvas.getContext('2d');
-        ctx.strokeStyle = 'red';
-        ctx.beginPath();
-        let factor = 1 / 100;//to fit is on the canvas
-        for (let i = 0; i < inputData.length; i++) {
-            if (i > 0) {
-                ctx.lineTo(inputData[i][0] * factor, inputData[i][1] * factor);
-            } else {
-                ctx.moveTo(inputData[i][0] * factor, inputData[i][1] * factor);
+        if (squares[s].x1 == 94539 && squares[s].y1 == 48701) {
+            //this is the top point, so y2 should be less than y1
+            if (squares[s].y2 < squares[s].y1) {
+                pointInSquare = true;
             }
         }
-        ctx.closePath();
-        ctx.stroke();
-
-        //is see now.... there is only straight lines between points (did not check but assumed)
-        //i also realise there is only the bggest squares possible if there is not a point inside AND it contains one of the weird point..
-        //BUT than there is only a combination possible where there is a sqquare ABOVE or UNDER the two special points....
-       
-        //start taking it down step by step.......
-
-        //make an array of all the squares and order them big to low
-        let squares = [];
-        for (let i = 0; i < inputData.length; i++) {
-            for (let j = i + 1; j < inputData.length; j++) {
-                let width = Math.abs(inputData[i][0] - inputData[j][0]) + 1;
-                let height = Math.abs(inputData[i][1] - inputData[j][1]) + 1;
-                let surface = width * height;
-                squares.push({ x1: inputData[i][0], y1: inputData[i][1], x2: inputData[j][0], y2: inputData[j][1], surface: surface });
+        if (squares[s].x2 == 94539 && squares[s].y2 == 50089) {
+            //this is the bottom point, so y1 should be more than y2
+            if (squares[s].y1 > squares[s].y2) {
+                pointInSquare = true;
             }
         }
-        //nice and easy sort it....
-        squares.sort((a, b) => b.surface - a.surface);
-     
-        //now check for all the squares if there is a point in them from the top down
-        // (i thought first this would give a solution....)
-        for (let s = 0; s < squares.length; s++) {
-            let hasPointInside = false;
-            squares[s].pointInside = false;
-            for (let p = 0; p < inputData.length; p++) {
-                if (inputData[p][0] > Math.min(squares[s].x1, squares[s].x2) &&
-                    inputData[p][0] < Math.max(squares[s].x1, squares[s].x2) &&
-                    inputData[p][1] > Math.min(squares[s].y1, squares[s].y2) &&
-                    inputData[p][1] < Math.max(squares[s].y1, squares[s].y2)) {
-                    hasPointInside = true;
-                    squares[s].pointInside = true;
-                    break;
-                }
+        if (squares[s].x2 == 94539 && squares[s].y2 == 48701) {
+            //this is the top point, so y1 should be less than y2
+            if (squares[s].y1 < squares[s].y2) {
+                pointInSquare = true;
             }
         }
-        //to check if the squares were made right...
-        console.log(squares);
-
-        //
-        //find first square without a point inside (based on previous check)
-        //
-        // (that is not enoough... or not even neeeded, did not check that...)
-        //
-        //NOW the magic....
-        //
-        //and that has point(94539,50089) or point(94539,48701)
-        //
-        //but not cross the line!!!!! (so points a at the right side top or down from the special point... i had this wronmg firsttime...)
-        //
-
-
-        //make a new squares array to store valid rsults from top to bottom
-        //..
-
-        let resultSquares = [];
-
-        for (let s = 0; s < squares.length; s++) {
-            if (!squares[s].pointInside) {
-                let pointInSquare = false;
-                if (squares[s].x1 == 94539 && squares[s].y1 == 50089) {
-                    //this is the bottom point, so y2 shpould be more than y1
-                    if (squares[s].y2 > squares[s].y1) {
-                        pointInSquare = true;
-                    }
-                }
-                if (squares[s].x1 == 94539 && squares[s].y1 == 48701) {
-                    //this is the top point, so y2 should be less than y1
-                    if (squares[s].y2 < squares[s].y1) {
-                        pointInSquare = true;
-                    }
-                }
-                if (squares[s].x2 == 94539 && squares[s].y2 == 50089) {
-                    //this is the bottom point, so y1 should be more than y2
-                    if (squares[s].y1 > squares[s].y2) {
-                        pointInSquare = true;
-                    }
-                }
-                if (squares[s].x2 == 94539 && squares[s].y2 == 48701) {
-                    //this is the top point, so y1 should be less than y2
-                    if (squares[s].y1 < squares[s].y2) {
-                        pointInSquare = true;
-                    }
-                }
-                if (pointInSquare) {
-                    //result2 = squares[s].surface;
-                    resultSquares.push(squares[s]);
-                }
-            }
+        if (pointInSquare) {
+            //result2 = squares[s].surface;
+            resultSquares.push(squares[s]);
         }
+    }
+}
 
-        console.log(resultSquares);
+console.log(resultSquares);
 
-        console.log("Result 2: " + result2);//1552139370 yes!!!!!
+console.log("Result 2: " + result2);//1552139370 yes!!!!!
 
-        //now visulaise the resultSquares on the canvas one by one big to small
-    
+//now visulaise the resultSquares on the canvas one by one big to small
 
-        drawSquare(0)
 
-        function drawSquare(r)
-        {
-             ctx.strokeStyle = `rgba(0, 0, 255, ${1 - r / resultSquares.length})`;
-            ctx.beginPath();
-            ctx.rect(
-                Math.min(resultSquares[r].x1, resultSquares[r].x2) * factor,
-                Math.min(resultSquares[r].y1, resultSquares[r].y2) * factor,
-                (Math.abs(resultSquares[r].x1 - resultSquares[r].x2) + 1) * factor,
-                (Math.abs(resultSquares[r].y1 - resultSquares[r].y2) + 1) * factor
-            );
-            ctx.stroke();
-            if (r<resultSquares.length-1)
-            {
-                setTimeout(() => { drawSquare(r+1); }, 100);
-            }
-        }
-        
-        //--------------------------- end ----------------------------
-    })
-    .catch(error => {
-        console.error('Error fetching the file:', error);
-    });
+
+drawSquare(0);
+
+//r = 83
+
+function drawSquare(r) {
+    drawpoints();
+    ctx.strokeStyle = 'blue';
+    ctx.fillStyle = 'rgba('+(r*(255/83))+','+(255-r*(255/83))+',0, 1)';
+    ctx.beginPath();
+    ctx.rect(
+        Math.min(resultSquares[r].x1, resultSquares[r].x2) * factor,
+        Math.min(resultSquares[r].y1, resultSquares[r].y2) * factor,
+        (Math.abs(resultSquares[r].x1 - resultSquares[r].x2) + 1) * factor,
+        (Math.abs(resultSquares[r].y1 - resultSquares[r].y2) + 1) * factor
+    );
+    ctx.stroke();
+    ctx.fill();
+    if (r < resultSquares.length - 1) {
+        setTimeout(() => { drawSquare(r + 1); }, 100);
+    }
+    else{
+        r = 0;
+        setTimeout(() => { drawSquare(r); }, 100);
+    }
+}
+

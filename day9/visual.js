@@ -2156,12 +2156,20 @@ console.log("Result 2: " + result2);//1552139370 yes!!!!!
 
 
 
+
+
+//create a dom element to show text
+let infoDiv = document.createElement('div');
+infoDiv.id = "infoDiv";
+document.body.appendChild(infoDiv);
+
 drawSquare(0);
 
 //r = 83
 
 function drawSquare(r) {
     drawpoints();
+    infoDiv.innerHTML = "Drawing square " + (r + 1) + " of " + resultSquares.length + " (surface: " + resultSquares[r].surface + ")";
     ctx.strokeStyle = 'blue';
     ctx.fillStyle = 'rgba('+(r*(255/83))+','+(255-r*(255/83))+',0, 1)';
     ctx.beginPath();
@@ -2174,11 +2182,11 @@ function drawSquare(r) {
     ctx.stroke();
     ctx.fill();
     if (r < resultSquares.length - 1) {
-        setTimeout(() => { drawSquare(r + 1); }, 100);
+        setTimeout(() => { drawSquare(r + 1); }, 300);
     }
     else{
         r = 0;
-        setTimeout(() => { drawSquare(r); }, 100);
+        setTimeout(() => { drawSquare(r); }, 300);
     }
 }
 

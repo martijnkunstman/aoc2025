@@ -107,7 +107,7 @@ fetch(0 ? "sample.txt" : "input.txt")
             //relly really naive approach, but at least i understand what i an doing....
 
             //flip horizontal #2
-            let newShape1 = [[0,0,0], [0,0,0], [0,0,0]];
+            let newShape1 = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
             newShape1[0][0] = shape[0][2];
             newShape1[0][1] = shape[0][1];
             newShape1[0][2] = shape[0][0];
@@ -119,8 +119,8 @@ fetch(0 ? "sample.txt" : "input.txt")
             newShape1[2][2] = shape[2][0];
             shapes[s].push(newShape1);
             //flip vertical #3
-            let newShape2 = [[0,0,0], [0,0,0], [0,0,0]];
-            newShape2[0][0] = shape[2][0];  
+            let newShape2 = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+            newShape2[0][0] = shape[2][0];
             newShape2[0][1] = shape[2][1];
             newShape2[0][2] = shape[2][2];
             newShape2[1][0] = shape[1][0];
@@ -131,7 +131,7 @@ fetch(0 ? "sample.txt" : "input.txt")
             newShape2[2][2] = shape[0][2];
             shapes[s].push(newShape2);
             //rotate right #4
-            let newShape3 = [[0,0,0], [0,0,0], [0,0,0]];
+            let newShape3 = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
             newShape3[0][0] = shape[2][0];
             newShape3[0][1] = shape[1][0];
             newShape3[0][2] = shape[0][0];
@@ -143,7 +143,7 @@ fetch(0 ? "sample.txt" : "input.txt")
             newShape3[2][2] = shape[0][2];
             shapes[s].push(newShape3);
             //rotate left #5
-            let newShape4 = [[0,0,0], [0,0,0], [0,0,0]];
+            let newShape4 = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
             newShape4[0][0] = shape[0][2];
             newShape4[0][1] = shape[1][2];
             newShape4[0][2] = shape[2][2];
@@ -155,7 +155,7 @@ fetch(0 ? "sample.txt" : "input.txt")
             newShape4[2][2] = shape[2][0];
             shapes[s].push(newShape4);
             //rotate right + flip horizontal #6
-            let newShape5 = [[0,0,0], [0,0,0], [0,0,0]];
+            let newShape5 = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
             newShape5[0][0] = shape[0][0];
             newShape5[0][1] = shape[1][0];
             newShape5[0][2] = shape[2][0];
@@ -167,7 +167,7 @@ fetch(0 ? "sample.txt" : "input.txt")
             newShape5[2][2] = shape[2][2];
             shapes[s].push(newShape5);
             //rotate left + flip horizontal #7
-            let newShape6 = [[0,0,0], [0,0,0], [0,0,0]];
+            let newShape6 = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
             newShape6[0][0] = shape[2][2];
             newShape6[0][1] = shape[1][2];
             newShape6[0][2] = shape[0][2];
@@ -179,7 +179,7 @@ fetch(0 ? "sample.txt" : "input.txt")
             newShape6[2][2] = shape[0][0];
             shapes[s].push(newShape6);
             //rotate right + flip vertical #8
-            let newShape7 = [[0,0,0], [0,0,0], [0,0,0]];
+            let newShape7 = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
             newShape7[0][0] = shape[2][2];
             newShape7[0][1] = shape[2][1];
             newShape7[0][2] = shape[2][0];
@@ -197,10 +197,10 @@ fetch(0 ? "sample.txt" : "input.txt")
 
         //remove duplicates from shapes
         for (let s = 0; s < shapes.length; s++) {
-            let shape = shapes[s]; 
+            let shape = shapes[s];
             let uniqueShapes = [];
             for (let i = 0; i < shape.length; i++) {
-                let isDuplicate = false;    
+                let isDuplicate = false;
                 for (let j = 0; j < uniqueShapes.length; j++) {
                     if (JSON.stringify(shape[i]) === JSON.stringify(uniqueShapes[j])) {
                         isDuplicate = true;
@@ -216,13 +216,11 @@ fetch(0 ? "sample.txt" : "input.txt")
         console.log("Unique shapes:");
         console.log(shapes);
 
-
-
         //now visualise the shapes and their alternatives..
         //creata a canvas to visualise stuff
         let canvas = document.createElement("canvas");
-        canvas.width = 1000;
-        canvas.height = 1000;
+        canvas.width = 2000;
+        canvas.height = 2000;
         document.body.appendChild(canvas);
         let ctx = canvas.getContext("2d");
 
@@ -239,15 +237,33 @@ fetch(0 ? "sample.txt" : "input.txt")
                         }
                         ctx.strokeStyle = "gray";
                         ctx.lineWidth = 1;
-                        ctx.fillRect(s * 60  + x * 10, y * 10 + v*40, 10, 10);
-                        ctx.strokeRect(s * 60 + x * 10, y * 10 + v*40, 10, 10);
+                        ctx.fillRect(s * 60 + x * 10, y * 10 + v * 40, 10, 10);
+                        ctx.strokeRect(s * 60 + x * 10, y * 10 + v * 40, 10, 10);
                     }
                 }
             }
         }
 
+        //draw the first 16 squares on the canvas.. use 4 x 4 and 50 max size
+        let offsetX = shapes.length * 60 + 20;;
+        ctx.translate(offsetX, 0);   
+        let scale = 6;         
+        for (let i = 0; i < 16; i++) {
+            let square = squares[i];
+            for (let y = 0; y < square.height; y++) {
+                for (let x = 0; x < square.width; x++) {
+                    ctx.fillStyle = "white";
+                    ctx.strokeStyle = "black";
+                    ctx.lineWidth = 1;
+                    ctx.fillRect(i%4*10+(i % 4) * (50*scale) + x * scale, Math.floor(i / 4) * (50*scale) + y * scale, scale, scale);
+                    ctx.strokeRect(i%4*10+(i % 4) * (50*scale) + x * scale, Math.floor(i / 4) * (50*scale) + y * scale, scale, scale);
+                }
+            }
+        }
 
 
         //-------------------------- end parse data --------------------------
+
+
 
     })

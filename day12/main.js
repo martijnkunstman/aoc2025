@@ -245,24 +245,82 @@ fetch(0 ? "sample.txt" : "input.txt")
         }
 
         //draw the first 16 squares on the canvas.. use 4 x 4 and 50 max size
-        let offsetX = shapes.length * 60 + 20;;
-        ctx.translate(offsetX, 0);   
-        let scale = 6;         
-        for (let i = 0; i < 16; i++) {
-            let square = squares[i];
-            for (let y = 0; y < square.height; y++) {
-                for (let x = 0; x < square.width; x++) {
-                    ctx.fillStyle = "white";
-                    ctx.strokeStyle = "black";
-                    ctx.lineWidth = 1;
-                    ctx.fillRect(i%4*10+(i % 4) * (50*scale) + x * scale, Math.floor(i / 4) * (50*scale) + y * scale, scale, scale);
-                    ctx.strokeRect(i%4*10+(i % 4) * (50*scale) + x * scale, Math.floor(i / 4) * (50*scale) + y * scale, scale, scale);
+        function drawSquare() {
+            let offsetX = shapes.length * 60 + 20;;
+            ctx.translate(offsetX, 0);
+            let scale = 6;
+            for (let i = 0; i < 16; i++) {
+                let square = squares[i];
+                for (let y = 0; y < square.height; y++) {
+                    for (let x = 0; x < square.width; x++) {
+                        ctx.fillStyle = "white";
+                        ctx.strokeStyle = "black";
+                        ctx.lineWidth = 1;
+                        ctx.fillRect(i % 4 * 10 + (i % 4) * (50 * scale) + x * scale, Math.floor(i / 4) * (50 * scale) + y * scale, scale, scale);
+                        ctx.strokeRect(i % 4 * 10 + (i % 4) * (50 * scale) + x * scale, Math.floor(i / 4) * (50 * scale) + y * scale, scale, scale);
+                    }
                 }
             }
         }
 
 
         //-------------------------- end parse data --------------------------
+
+        //lets find out how many 3x3 shapes can fit into the squares an see how many need to be in there....
+        //so i can remove the squares that fit without doing any border merging....
+
+        let willFitCount = 0;
+
+        let remainingSquares = [];
+        for (let i = 0; i < squares.length; i++) {
+            let fit3x3 = Math.floor(squares[i].width / 3) * Math.floor(squares[i].height / 3);
+            let needed3x3 = squares[i].shapesCount[0] + squares[i].shapesCount[1] + squares[i].shapesCount[2] + squares[i].shapesCount[3] + squares[i].shapesCount[4] + squares[i].shapesCount[5];
+            if (fit3x3 >= needed3x3) {
+                willFitCount++;
+            }
+            else {
+                //make a new array of remaining squares to check...
+                remainingSquares.push(squares[i]);
+            }
+        }
+
+        squares = remainingSquares;
+
+        console.log("Number of squares that can fit all 3x3 shapes: " + willFitCount);
+
+        //i can also check if there is squares that have less spaces than the shapes need, lets check that...
+        let impossibleCount = 0;
+        remainingSquares = [];
+        for (let i = 0; i < squares.length; i++) {
+            let totalSpaces = squares[i].width * squares[i].height;
+            let neededSpaces = 0;   
+            for (let s = 0; s < squares[i].shapesCount.length; s++) {   
+                //lets find out how many spaces each shape needs...
+                let shapeSpaces = 0;
+                for (let y = 0; y < shapes[s][0].length; y++) {
+                    for (let x = 0; x < shapes[s][0][y].length; x++) {
+                        if (shapes[s][0][y][x] === 1) {
+                            shapeSpaces++;
+                        }
+                    }
+                }
+                neededSpaces += shapeSpaces * squares[i].shapesCount[s];
+            }
+            if (neededSpaces > totalSpaces) {
+                impossibleCount++;
+            }
+            else {
+                remainingSquares.push(squares[i]);
+            }
+        }
+
+        console.log("Number of impossible squares: " + impossibleCount);
+        squares = remainingSquares;
+
+        console.log("Remaining squares to process: " + squares.length);
+
+        //drawSquare();
+
 
 
 

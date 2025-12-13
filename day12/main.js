@@ -1,0 +1,253 @@
+//before we start lets analyse what we are working with....
+
+//squares seem to be max 50x50 lets check that assumption later...
+
+//shapes that have to fit in have only 2 or 3 missing parts
+
+//lets parse the input.txt... we need an array of squares and info about the ammount of differnt shapes to fit into it
+//we need the actual shapes... lets store them as typed arrays for fast calculations... and also store all their rotated and flipped alternatives
+
+//use this object data for the squares...
+
+let squaresExample = [
+    {
+        width: 50, //width of the square
+        height: 50, //height of the square
+        shapesCount: [0, 1, 2, 3, 4, 5], //how many of each shape we need to fit in
+    }
+];
+
+//lets use this data for shapes (for now.... later convert it to 1d typed arrays)
+
+//lets get an insight of what rotation and flipping does to shapes...
+let shapesExample = [
+    [[1, 1, 1, 1, 1, 1, 1, 1, 0], [0, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 0, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 0, 1, 1]], //only 4 versions.. flip=rotate operation
+    [[1, 1, 1, 1, 1, 1, 1, 0, 1], []],//see example below...
+    [[1, 1, 1, 1, 1, 1, 0, 1, 1], []],//...
+    [[1, 1, 1, 1, 1, 0, 1, 1, 1], []],//...
+    [[1, 1, 1, 1, 0, 1, 1, 1, 1], []],//...
+    [[1, 1, 1, 0, 1, 1, 1, 1, 1], []]//...
+];
+//or maybe first store a 2d array so it is easier to see if it is right...
+
+/*
+110 011 111 111
+111 111 111 111
+111 111 011 110
+
+111 111 100 001 111 011 110 111
+110 011 111 111 011 011 110 110
+110 011 111 111 011 111 111 110
+
+011 110
+111 111
+110 011
+
+111
+111
+111
+
+111
+101
+111
+
+s0 it can be 4 8 2 or 1 (1 not likely, because it is all filled)
+
+*/
+
+//do flip and rotate operations and remove duplicates...
+//lets visualise the shapes and their transforms
+
+
+let squares = [];
+let shapes = [[[]], [[]], [[]], [[]], [[]], [[]]];//i know that there are 6 shapes.... so hardcode it 
+
+fetch(0 ? "sample.txt" : "input.txt")
+    .then(response => response.text())
+    .then(data => {
+        //-------------------------- start parse data --------------------------
+        data = data.replaceAll("\r", "");
+        let inputData = data.split("\n");
+        let count = 0;
+        for (let line of inputData) {
+            if (line.length > 4) {
+                //we got a square line
+                let square = {
+                    width: 0,
+                    height: 0,
+                    shapesCount: []
+                };
+                let temp = line.split(": ");
+                square.width = parseInt(temp[0].split("x")[0]);
+                square.height = parseInt(temp[0].split("x")[1]);
+                let counts = temp[1].split(" ");
+                for (let count of counts) {
+                    square.shapesCount.push(parseInt(count));
+                }
+                squares.push(square);
+            }
+            else {
+                //shape line
+                if (line.length === 3) {
+                    //map # to 1 and . to 0
+                    shapes[Math.floor(count / 3)][0].push(line.split("").map(c => c === "#" ? 1 : 0));
+                    count++;
+                }
+            }
+
+        }
+        console.log(squares);
+
+        for (let s = 0; s < shapes.length; s++) {
+            let shape = shapes[s][0];
+            console.log("Original shape:");
+            console.log(shape);
+            //now do the transformations... should be 7 in total... remove duplicates
+
+            //relly really naive approach, but at least i understand what i an doing....
+
+            //flip horizontal #2
+            let newShape1 = [[0,0,0], [0,0,0], [0,0,0]];
+            newShape1[0][0] = shape[0][2];
+            newShape1[0][1] = shape[0][1];
+            newShape1[0][2] = shape[0][0];
+            newShape1[1][0] = shape[1][2];
+            newShape1[1][1] = shape[1][1];
+            newShape1[1][2] = shape[1][0];
+            newShape1[2][0] = shape[2][2];
+            newShape1[2][1] = shape[2][1];
+            newShape1[2][2] = shape[2][0];
+            shapes[s].push(newShape1);
+            //flip vertical #3
+            let newShape2 = [[0,0,0], [0,0,0], [0,0,0]];
+            newShape2[0][0] = shape[2][0];  
+            newShape2[0][1] = shape[2][1];
+            newShape2[0][2] = shape[2][2];
+            newShape2[1][0] = shape[1][0];
+            newShape2[1][1] = shape[1][1];
+            newShape2[1][2] = shape[1][2];
+            newShape2[2][0] = shape[0][0];
+            newShape2[2][1] = shape[0][1];
+            newShape2[2][2] = shape[0][2];
+            shapes[s].push(newShape2);
+            //rotate right #4
+            let newShape3 = [[0,0,0], [0,0,0], [0,0,0]];
+            newShape3[0][0] = shape[2][0];
+            newShape3[0][1] = shape[1][0];
+            newShape3[0][2] = shape[0][0];
+            newShape3[1][0] = shape[2][1];
+            newShape3[1][1] = shape[1][1];
+            newShape3[1][2] = shape[0][1];
+            newShape3[2][0] = shape[2][2];
+            newShape3[2][1] = shape[1][2];
+            newShape3[2][2] = shape[0][2];
+            shapes[s].push(newShape3);
+            //rotate left #5
+            let newShape4 = [[0,0,0], [0,0,0], [0,0,0]];
+            newShape4[0][0] = shape[0][2];
+            newShape4[0][1] = shape[1][2];
+            newShape4[0][2] = shape[2][2];
+            newShape4[1][0] = shape[0][1];
+            newShape4[1][1] = shape[1][1];
+            newShape4[1][2] = shape[2][1];
+            newShape4[2][0] = shape[0][0];
+            newShape4[2][1] = shape[1][0];
+            newShape4[2][2] = shape[2][0];
+            shapes[s].push(newShape4);
+            //rotate right + flip horizontal #6
+            let newShape5 = [[0,0,0], [0,0,0], [0,0,0]];
+            newShape5[0][0] = shape[0][0];
+            newShape5[0][1] = shape[1][0];
+            newShape5[0][2] = shape[2][0];
+            newShape5[1][0] = shape[0][1];
+            newShape5[1][1] = shape[1][1];
+            newShape5[1][2] = shape[2][1];
+            newShape5[2][0] = shape[0][2];
+            newShape5[2][1] = shape[1][2];
+            newShape5[2][2] = shape[2][2];
+            shapes[s].push(newShape5);
+            //rotate left + flip horizontal #7
+            let newShape6 = [[0,0,0], [0,0,0], [0,0,0]];
+            newShape6[0][0] = shape[2][2];
+            newShape6[0][1] = shape[1][2];
+            newShape6[0][2] = shape[0][2];
+            newShape6[1][0] = shape[2][1];
+            newShape6[1][1] = shape[1][1];
+            newShape6[1][2] = shape[0][1];
+            newShape6[2][0] = shape[2][0];
+            newShape6[2][1] = shape[1][0];
+            newShape6[2][2] = shape[0][0];
+            shapes[s].push(newShape6);
+            //rotate right + flip vertical #8
+            let newShape7 = [[0,0,0], [0,0,0], [0,0,0]];
+            newShape7[0][0] = shape[2][2];
+            newShape7[0][1] = shape[2][1];
+            newShape7[0][2] = shape[2][0];
+            newShape7[1][0] = shape[1][2];
+            newShape7[1][1] = shape[1][1];
+            newShape7[1][2] = shape[1][0];
+            newShape7[2][0] = shape[0][2];
+            newShape7[2][1] = shape[0][1];
+            newShape7[2][2] = shape[0][0];
+            shapes[s].push(newShape7);
+        }
+
+        console.log("Transformed shapes:");
+        console.log(shapes);
+
+        //remove duplicates from shapes
+        for (let s = 0; s < shapes.length; s++) {
+            let shape = shapes[s]; 
+            let uniqueShapes = [];
+            for (let i = 0; i < shape.length; i++) {
+                let isDuplicate = false;    
+                for (let j = 0; j < uniqueShapes.length; j++) {
+                    if (JSON.stringify(shape[i]) === JSON.stringify(uniqueShapes[j])) {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+                if (!isDuplicate) {
+                    uniqueShapes.push(shape[i]);
+                }
+            }
+            shapes[s] = uniqueShapes;
+        }
+        console.log("Unique shapes:");
+        console.log(shapes);
+
+
+
+        //now visualise the shapes and their alternatives..
+        //creata a canvas to visualise stuff
+        let canvas = document.createElement("canvas");
+        canvas.width = 1000;
+        canvas.height = 1000;
+        document.body.appendChild(canvas);
+        let ctx = canvas.getContext("2d");
+
+        for (let s = 0; s < shapes.length; s++) {
+            let shape = shapes[s];
+            for (let v = 0; v < shape.length; v++) {
+                let variant = shape[v];
+                for (let y = 0; y < variant.length; y++) {
+                    for (let x = 0; x < variant[y].length; x++) {
+                        if (variant[y][x] === 1) {
+                            ctx.fillStyle = "black";
+                        } else {
+                            ctx.fillStyle = "white";
+                        }
+                        ctx.strokeStyle = "gray";
+                        ctx.lineWidth = 1;
+                        ctx.fillRect(s * 60  + x * 10, y * 10 + v*40, 10, 10);
+                        ctx.strokeRect(s * 60 + x * 10, y * 10 + v*40, 10, 10);
+                    }
+                }
+            }
+        }
+
+
+
+        //-------------------------- end parse data --------------------------
+
+    })

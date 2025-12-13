@@ -67,13 +67,47 @@ fetch(0 ? "sample.txt" : "input.txt")
             for (let i = 0; i < node.length; i++) {
                 findOuts(node[i]);
             }
-
         }
 
         findOuts(objectKeysAndConnections["you"]);
         console.log("Result 1: " + count);
 
         //-------------------------- part 2 -------------------------- 
+
+        /*
+        svr: aaa bbb
+        aaa: fft
+        fft: ccc
+        bbb: tty
+        tty: ccc
+        ccc: ddd eee
+        ddd: hub
+        hub: fff
+        eee: dac
+        dac: fff
+        fff: ggg hhh
+        ggg: out
+        hhh: out
+        */
+
+        /*
+        connections = [
+            ["svr", "aaa", "bbb"],
+            ["aaa", "fft"],
+            ["fft", "ccc", 'svr'],
+            ["bbb", "tty"],
+            ["tty", "ccc"],
+            ["ccc", "ddd", "eee"],
+            ["ddd", "hub"],
+            ["hub", "fff"],
+            ["eee", "dac"],
+            ["dac", "fff"],
+            ["fff", "ggg", "hhh"],
+            ["ggg", "out"],
+            ["hhh", "out"],
+        ];
+        */
+
 
         let objectKeysAndConnections2 = {};
         for (let i = 0; i < connections.length; i++) {
@@ -103,52 +137,41 @@ fetch(0 ? "sample.txt" : "input.txt")
 
         count = 0;
 
-        function findOuts2(node, visited = new Set()) {
-            if (visited.has(node)) {
-                return;
+        function findOuts2(node, visited) {
+            //loop trhough all keys in node
+            if (visited.length > 8) {
+                console.log(visited);
+                console.log("too deep");
+                return; // prevent infinite loops
             }
-            const newVisited = new Set(visited);
-            newVisited.add(node);
-            if (node["out"] == "out") {
-                count++;
-                return;
-            }
-            let neighbors = objectKeysAndConnections2[node];
-
-            for (let i = 0; i < neighbors.length; i++) {
-                let neighborName = neighbors[i];
-                findOuts2(neighborName, newVisited);
-            }
-        }
-
-        findOuts2(objectKeysAndConnections2["svr"]);
-
-        function depth(t, mem = new Set) {
-            if (mem.has(t))
-                return Infinity
-            else switch (mem.add(t), t?.constructor) {
-                case Object:
-                case Array:
-                    return 1 + Math.max
-                        (-1
-                            , ...Object
-                                .values(t)
-                                .map(_ => depth(_, mem))
-                        )
-                default:
-                    return 0
+            for (let key in node) {
+                // console.log("key:");
+                // console.log(key);
+                // console.log("visited:");
+                // console.log(visited);
+                if (key == "out") {
+                    if (visited.includes("fft") && visited.includes("dac")) {
+                        count++;
+                        console.log("found out, count: " + count);
+                    }
+                    return;
+                }
+                else if (!visited.includes(key)) {
+                    visited.push(key);
+                    findOuts2(node[key], visited);
+                    visited.pop();
+                }
+                else {
+                    //loop found
+                    console.log("loop found");
+                }
             }
         }
 
-        console.log(depth(objectKeysAndConnections2["svr"]));
-        //depth can be infinity and then it does not work... need to check that.....
-
-        console.log("Result 2: " + count);//
-
-
-
-
-
+        // Start it off
+        findOuts2(objectKeysAndConnections2["svr"], ["svr"]);
+        console.log("Result 2: " + count);
+  
         //--------------------------- end ----------------------------
     })
     .catch(error => {

@@ -450,11 +450,11 @@ async function solveWithZ3() {
     process.exit(0);
 }
 
-solveWithZ3();
+//solveWithZ3();
 
 //--- now actuually solve all the equations...
 
-let countResult = 0;
+
 
 async function solveWithZ3_input(groupsStr, targetsStr) {
     // --- 1. The Input Data ---
@@ -478,12 +478,15 @@ async function solveWithZ3_input(groupsStr, targetsStr) {
     const varMap = rawGroups.map(g => {
         return g.replace(/[(,]/g, ' ').trim().split(/\s+/).map(Number);
     });
-    console.log("Variable Map:");
-    console.log(varMap);
+    //console.log("Variable Map:");
+    //console.log(varMap);
 
     // --- 4. Define Variables ---
     // We name them s, t, u... based on your previous examples
-    const varNames = ['s', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    let varNames = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    //trim to length of varMap
+    varNames = varNames.slice(0, varMap.length);
+
     const z3Vars = varNames.map(name => Int.const(name));
 
     // Constraint: All variables must be non-negative (>= 0)
@@ -515,28 +518,28 @@ async function solveWithZ3_input(groupsStr, targetsStr) {
     const minGoal = optimizer.minimize(totalSum);
 
     // --- 7. Solve ---
-    console.log("Solving...");
+    //console.log("Solving...");
     const status = await optimizer.check();
 
     if (status === 'sat') {
         const model = optimizer.model();
-        console.log("\n--- OPTIMAL SOLUTION FOUND ---");
+        //console.log("\n--- OPTIMAL SOLUTION FOUND ---");
 
         // Print individual values
         let calculatedSum = 0;
         for (let i = 0; i < z3Vars.length; i++) {
             const val = model.eval(z3Vars[i]).asString();
-            console.log(`${varNames[i]} = ${val}`);
+            //console.log(`${varNames[i]} = ${val}`);
             calculatedSum += parseInt(val);
         }
         console.log("------------------------------");
         console.log(`Total Sum: ${calculatedSum}`);
         countResult = countResult + calculatedSum;
-        console.log("Total of all sums: " + countResult);
+        console.log("Total of all sums now "+index+ ": " + countResult);
         setTimeout(() => {
             console.log("Solving next...");
             newSolve();
-        }, 2000);
+        }, 1000);
         //
         
     } else {
@@ -545,7 +548,7 @@ async function solveWithZ3_input(groupsStr, targetsStr) {
    
 
     // Cleanup (important for Z3 bindings)
-    process.exit(0);
+    //process.exit(0);
 
 }
 
@@ -570,10 +573,6 @@ for (let i = 0; i < newInput.length; i++) {
 //console.log(groupsStrArray);
 //console.log(targetsStrArray);
 
-let index = 0;
-
-solveWithZ3_input(groupsStrArray[index], targetsStrArray[index]);
-
 function newSolve() {
     index++;
     if (index < groupsStrArray.length) {
@@ -581,6 +580,19 @@ function newSolve() {
     }
 
 }
+console.clear();
+let countResult = 17102;
+let index = 168;
+
+//Total of all sums now 16: 1938
+//Total of all sums now 17: 2015
+//Total of all sums now 18: 2069
+
+//Total of all sums now 34: 3911
+//Total of all sums now 35: 3997
+//Total of all sums now 36: 4114
+
+solveWithZ3_input(groupsStrArray[index], targetsStrArray[index]);
 
 
 
